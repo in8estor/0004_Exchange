@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+    php:
+        build:
+            context: ./docker/php # своя сборка образа на основании dockerfile
+        #image: php:8.2.3-fpm # НЕ ОБЯЗАТЕЛЬНО
+        volumes:
+            - ./:/var/www/project # ниже в образе nginx тоже изменить
+
+    nginx:
+        image: nginx:latest # используем последний стабильный образ nginx
+        ports:
+            - 8080:80 # маршрутизируем порты
+        volumes:
+            - ./:/var/www/project # монтируем директории, слева директории на основной машине, справа - куда они монтируются в контейнере
+            - ./docker/nginx:/etc/nginx/conf.d
+        depends_on:
+            - php
+
+    postgres:
+        image: postgres:16
+        #container_name: mysql8 # НЕ ОБЯЗАТЕЛЬНО можно задать имя контейнера
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_USER=root # НЕ ОБЯЗАТЕЛЬНО
+            - POSTGRES_PASSWORD=root # задаем пароль для root пользователя
+        volumes:
+            - ./data/postgresql:/var/lib/postgresql/data
+
+    #mysql:
+        #image: mysql:8
+        #container_name: mysql8 # НЕ ОБЯЗАТЕЛЬНО можно задать имя контейнера
+        #ports:
+            #- 3306:3306
+        #environment:
+            #- MYSQL_USER=root # НЕ ОБЯЗАТЕЛЬНО
+            #- MYSQL_ROOT_PASSWORD=root # задаем пароль для root пользователя
+        #volumes:
+            #- ../../data/mysql:/var/lib/mysql
