@@ -1,30 +1,25 @@
-FROM php:8.2.3-fpm
+FROM ubuntu:20.04
 
-RUN apt-get update && apt-get install -y \
-    gnupg \
-    g++ \
-    procps \
-    openssl \
-    git \
-    unzip \
-    zlib1g-dev \
-    libzip-dev \
-    libfreetype6-dev \
-    libpng-dev \
-    libjpeg-dev \
-    libicu-dev  \
-    libonig-dev \
-    libxslt1-dev \
-    acl \
-    && echo 'alias sf="php bin/console"' >> ~/.bashrc
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update
+RUN apt install -y lsb-release ca-certificates apt-transport-https software-properties-common
 
-RUN docker-php-ext-configure gd --with-jpeg --with-freetype 
+RUN add-apt-repository -y ppa:ondrej/php
 
-RUN docker-php-ext-install \
-    mysqli pdo pdo_mysql zip xsl gd intl opcache dom xml pdo_pgsql sodium redis curl
+RUN apt update
+RUN apt install -y supervisor iputils-ping libboost-dev libxml2-dev
+RUN apt install -y php8.2-cli php8.2-fpm php8.2-curl php8.2-mbstring \
+    php8.2-xml php8.2-intl \
+    php8.2-zip php8.2-xdebug php8.2-pgsql php8.2-bcmath php8.2-amqp \
+    php-imagick php8.2-gmp php8.2-redis
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN curl -sS https://get.symfony.com/cli/installer | bash
-#RUN mv /home/asd2d/.symfony/bin/symfony /usr/local/bin/symfony
+RUN update-alternatives --set php /usr/bin/php8.2
 
-WORKDIR /var/www/project
+#RUN apt install -y curl
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN mkdir /run/php
+
+CMD ["supervisord", "-c", "/etc/supervisor/supervisor_nodeamon.conf"]
+
+EXPOSE 9000
