@@ -17,6 +17,12 @@ class HomepageController extends AbstractController
             <html>
                 <body>
                     <img src="/images/homepage.gif" />
+                    <form action="/login" target="_blank">
+                        <button>Войти</button>
+                    </form>    
+                    <form action="/registration" target="_blank">
+                        <button>Регистрация</button>
+                    </form>
                 </body>
             </html>
             EOF
