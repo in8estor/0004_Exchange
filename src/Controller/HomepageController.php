@@ -15,13 +15,16 @@ class HomepageController extends AbstractController
         return new Response(
             <<<EOF
             <html>
+                <head>
+                    <title>Обмен - Exchange</title>
+                </head>
                 <body>
-                    <img src="/images/homepage.gif" />
-                    <form action="/login" target="_blank">
-                        <button>Войти</button>
+                    САЙТ В РАЗРАБОТКЕ !!! <br> <br>
+                    <form action="/login" target="_self" method='get'>
+                        <input type='submit' value='Войти'>
                     </form>    
-                    <form action="/registration" target="_blank">
-                        <button>Регистрация</button>
+                    <form action="/registration" target="_self" method='get'>
+                    <input type='submit' value='Регистрация'>
                     </form>
                 </body>
             </html>
