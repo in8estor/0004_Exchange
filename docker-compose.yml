@@ -20,6 +20,7 @@ services:
 
     nginx:
         image: nginx:latest # используем последний стабильный образ nginx
+        restart: 'no'
         ports:
             - 8080:80 # маршрутизируем порты
         volumes:
