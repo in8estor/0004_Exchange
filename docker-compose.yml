@@ -5,9 +5,18 @@ services:
         build:
             context: ./docker/php # своя сборка образа на основании dockerfile
         #image: php:8.2.3-fpm # НЕ ОБЯЗАТЕЛЬНО
+        restart: 'no'
         volumes:
             - ./:/var/www/project # ниже в образе nginx тоже изменить
+            - ./docker/php/php.ini:/etc/php/8.2/php.ini
+            - ./docker/php/pool.d/www.conf:/etc/php/8.2/fpm/pool.d/www.conf
+            - ./docker/php/xdebug.ini:/etc/php/8.2/mods-available/xdebug.ini
             - ./docker/php/supervisor.conf:/etc/supervisor/supervisor_nodeamon.conf
+        environment:
+            XDEBUG_PORT: 9001
+            XDEBUG_HOST: 172.17.0.1
+            XDEBUG_IDE: VSCODE
+        working_dir: /var/www/project
 
     nginx:
         image: nginx:latest # используем последний стабильный образ nginx
@@ -16,8 +25,11 @@ services:
         volumes:
             - ./:/var/www/project # монтируем директории, слева директории на основной машине, справа - куда они монтируются в контейнере
             - ./docker/nginx:/etc/nginx/conf.d
-        #depends_on:
-            #- php
+        depends_on:
+            - php
+        environment:
+            WEB_ROOT: /var/www/project/public
+            PHP_HOST: php
 
     postgres:
         image: postgres:16

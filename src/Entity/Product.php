@@ -13,16 +13,16 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $categoryId = null;
+    #[ORM\Column(length: 255)]
+    private ?string $category = null;
 
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 200)]
+    #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 200)]
+    #[ORM\Column(length: 255)]
     private ?string $location = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -36,21 +36,14 @@ class Product
         return $this->id;
     }
 
-    public function setId(int $id): static
+    public function getCategory(): ?string
     {
-        $this->id = $id;
-
-        return $this;
+        return $this->category;
     }
 
-    public function getCategoryId(): ?int
+    public function setCategory(string $category): static
     {
-        return $this->categoryId;
-    }
-
-    public function setCategoryId(int $categoryId): static
-    {
-        $this->categoryId = $categoryId;
+        $this->category = $category;
 
         return $this;
     }

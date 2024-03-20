@@ -21,7 +21,7 @@ class HomepageController extends AbstractController
                 <body>
                     САЙТ В РАЗРАБОТКЕ !!! <br> <br>
                     <form action="/login" target="_self" method='get'>
-                        <input type='submit' value='Войти'>
+                        <input type='submit' value='Вход'>
                     </form>    
                     <form action="/registration" target="_self" method='get'>
                     <input type='submit' value='Регистрация'>
