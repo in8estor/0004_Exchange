@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,9 +22,10 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function save(ManagerRegistry $registry)
+    public function save(User $user): void
     {
-        parent::__construct($registry, User::class);
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
 
     //    /**
