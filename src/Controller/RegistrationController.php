@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
         $user->setPassword($jsonData['password']);
         $user->setCreatedAt(new \DateTime());
         $user->setUpdatedAt(new \DateTime());
-        $userRepository->save($user);
+        $userRepository->create($user);
 
         return $this->json($user);
     }
